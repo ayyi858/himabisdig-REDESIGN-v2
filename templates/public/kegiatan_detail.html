@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}{{ kegiatan.judul }} | HIMABISDIG UNM{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% if messages %}
+        <div class="mb-8">
+            {% for message in messages %}
+            <div class="p-4 rounded-md shadow-sm {% if message.tags == 'success' %}bg-green-50 text-green-800 border-l-4 border-green-400{% else %}bg-blue-50 text-blue-800 border-l-4 border-blue-400{% endif %}">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check-circle {% if message.tags == 'success' %}text-green-400{% else %}text-blue-400{% endif %}"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium">{{ message }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="md:flex">
+                <div class="md:flex-shrink-0 md:w-2/5">
+                    {% if kegiatan.poster %}
+                        <img class="h-full w-full object-cover md:h-full" src="{{ kegiatan.poster.url }}" alt="{{ kegiatan.judul }}">
+                    {% else %}
+                        <div class="h-64 w-full bg-gray-200 flex items-center justify-center text-gray-400 md:h-full"><i class="fas fa-image text-5xl"></i></div>
+                    {% endif %}
+                </div>
+                <div class="p-8 md:w-3/5">
+                    <div class="uppercase tracking-wide text-sm text-primary-600 font-semibold mb-1">
+                        {% if kegiatan.ekosistem %}{{ kegiatan.get_ekosistem_display }}{% else %}Umum{% endif %}
+                    </div>
+                    <h1 class="block mt-1 text-3xl leading-tight font-extrabold text-gray-900">{{ kegiatan.judul }}</h1>
+                    
+                    <div class="mt-6 flex flex-col gap-3">
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-calendar-alt w-6 text-primary-500"></i>
+                            <span class="font-medium text-gray-900">{{ kegiatan.tanggal|date:"l, d F Y" }}</span>
+                            <span class="ml-2 px-2 py-0.5 rounded-full bg-gray-100 text-sm">{{ kegiatan.tanggal|date:"H:i" }} WIB</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-map-marker-alt w-6 text-primary-500"></i>
+                            <span class="font-medium text-gray-900">{{ kegiatan.lokasi }}</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-users-cog w-6 text-primary-500"></i>
+                            <span class="font-medium text-gray-900">Mode Seleksi: </span>
+                            <span class="ml-2 px-2 py-0.5 rounded text-sm text-white {% if kegiatan.mode_seleksi == 'auto' %}bg-green-500{% else %}bg-yellow-500{% endif %}">
+                                {{ kegiatan.get_mode_seleksi_display }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 prose prose-primary max-w-none text-gray-500">
+                        <h3 class="text-xl font-bold text-gray-900">Deskripsi Kegiatan</h3>
+                        <p>{{ kegiatan.deskripsi|linebreaksbr }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 p-8 bg-gray-50">
+                <h3 class="text-2xl font-extrabold text-gray-900 mb-6 text-center">Form Pendaftaran</h3>
+                <form action="" method="POST" class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div class="col-span-1 sm:col-span-2">
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                            <input type="text" name="nama" id="nama" required class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3 border border-gray-300">
+                        </div>
+
+                        <div class="col-span-1">
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email Aktif</label>
+                            <input type="email" name="email" id="email" required class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3 border border-gray-300">
+                        </div>
+
+                        <div class="col-span-1">
+                            <label for="no_wa" class="block text-sm font-medium text-gray-700">Nomor WhatsApp</label>
+                            <input type="text" name="no_wa" id="no_wa" required class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3 border border-gray-300">
+                        </div>
+
+                        <div class="col-span-1">
+                            <label for="status_pendaftar" class="block text-sm font-medium text-gray-700">Status</label>
+                            <select name="status_pendaftar" id="status_pendaftar" required class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                <option value="mahasiswa">Mahasiswa</option>
+                                <option value="umum">Umum</option>
+                            </select>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label for="link_wa" class="block text-sm font-medium text-gray-700">Link WhatsApp Personal <span class="text-xs text-gray-400 font-normal">(Opsional)</span></label>
+                            <input type="url" name="link_wa" id="link_wa" placeholder="https://wa.me/..." class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3 border border-gray-300">
+                        </div>
+                    </div>
+                    <div class="mt-8 text-center">
+                        <button type="submit" class="w-full sm:w-auto inline-flex justify-center py-3 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                            Kirim Pendaftaran
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

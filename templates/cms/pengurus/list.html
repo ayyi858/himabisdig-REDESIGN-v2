@@ -1,0 +1,39 @@
+{% extends 'cms/generic_list.html' %}
+
+{% block table_rows %}
+{% for item in items %}
+<tr class="hover:bg-gray-50/50 transition-colors">
+    <td class="px-6 py-4 flex items-center gap-3">
+        {% if item.foto %}
+            <img src="{{ item.foto.url }}" class="w-10 h-10 rounded-full object-cover border-2 border-primary-100 shadow-sm" alt="">
+        {% else %}
+            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 border border-gray-200 shadow-sm">
+                <i class="fas fa-user text-xs"></i>
+            </div>
+        {% endif %}
+        <div>
+            <p class="font-bold text-gray-900 leading-tight">{{ item.nama }}</p>
+            <p class="text-xs text-gray-400">ID: #{{ item.id }}</p>
+        </div>
+    </td>
+    <td class="px-6 py-4">
+        <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-lg text-xs font-bold border border-primary-100 shadow-sm">
+            {{ item.jabatan|default:"Tanpa Jabatan" }}
+        </span>
+    </td>
+    <td class="px-6 py-4 text-sm text-gray-500 font-medium">
+        {{ item.periode }}
+    </td>
+    <td class="px-6 py-4 text-right">
+        <div class="flex justify-end gap-2">
+            <a href="{% url 'cms_edit_pengurus' item.pk %}" class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm" title="Edit">
+                <i class="fas fa-edit text-xs"></i>
+            </a>
+            <a href="{% url 'cms_delete_pengurus' item.pk %}" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Hapus" onclick="return confirm('Hapus data pengurus {{ item.nama }}?')">
+                <i class="fas fa-trash text-xs"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

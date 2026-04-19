@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Beranda | HIMABISDIG UNM{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="relative bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+        <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 pt-20">
+            <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+                <div class="sm:text-center lg:text-left">
+                    <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                        <span class="block xl:inline">Empowering Digital</span>
+                        <span class="block text-primary-600 xl:inline">Business Leaders</span>
+                    </h1>
+                    <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                        Wadah mahasiswa Bisnis Digital UNM untuk berkolaborasi, berinovasi, dan membangun ekosistem digital masa depan.
+                    </p>
+                    <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start gap-4">
+                        <div class="rounded-md shadow">
+                            <a href="/kegiatan/" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 md:py-4 md:text-lg transition-transform transform hover:scale-105">
+                                Ikuti Kegiatan
+                            </a>
+                        </div>
+                        <div class="mt-3 sm:mt-0">
+                            <a href="/tentang-kami/" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200 md:py-4 md:text-lg transition-transform transform hover:scale-105">
+                                Pelajari Lebih Lanjut
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+        <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full opacity-90" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1567&q=80" alt="Students collaborating">
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="bg-primary-600">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                Tumbuh Bersama Kami
+            </h2>
+            <p class="mt-3 text-xl text-primary-200 sm:mt-4">
+                Bergabung dalam komunitas pembelajar dan praktisi yang saling mendukung.
+            </p>
+        </div>
+        <dl class="mt-10 text-center sm:max-w-3xl sm:mx-auto sm:grid sm:grid-cols-3 sm:gap-8">
+            <div class="flex flex-col">
+                <dt class="order-2 mt-2 text-lg leading-6 font-medium text-primary-200">Pengurus Aktif</dt>
+                <dd class="order-1 text-5xl font-extrabold text-white">{{ pengurus_count }}</dd>
+            </div>
+            <div class="flex flex-col mt-10 sm:mt-0">
+                <dt class="order-2 mt-2 text-lg leading-6 font-medium text-primary-200">Total Kegiatan</dt>
+                <dd class="order-1 text-5xl font-extrabold text-white">{{ kegiatan_count }}</dd>
+            </div>
+            <div class="flex flex-col mt-10 sm:mt-0">
+                <dt class="order-2 mt-2 text-lg leading-6 font-medium text-primary-200">Peserta Terlibat</dt>
+                <dd class="order-1 text-5xl font-extrabold text-white">{{ peserta_count }}</dd>
+            </div>
+        </dl>
+    </div>
+</div>
+
+<!-- Latest Kegiatan -->
+<div class="py-16 bg-gray-50 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-base font-semibold text-primary-600 tracking-wide uppercase">Event Terbaru</h2>
+            <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                Ayo Berpartisipasi!
+            </p>
+        </div>
+        <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {% for item in latest_kegiatan %}
+            <div class="flex flex-col rounded-lg shadow-lg overflow-hidden bg-white hover:shadow-xl transition-shadow cursor-pointer">
+                <div class="flex-shrink-0">
+                    {% if item.poster %}
+                        <img class="h-48 w-full object-cover" src="{{ item.poster.url }}" alt="">
+                    {% else %}
+                        <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-400">No Image</div>
+                    {% endif %}
+                </div>
+                <div class="flex-1 bg-white p-6 justify-between flex flex-col">
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-primary-600">
+                            {% if item.ekosistem %}{{ item.get_ekosistem_display }}{% else %}Umum{% endif %}
+                        </p>
+                        <a href="{% url 'kegiatan_detail' item.pk %}" class="block mt-2">
+                            <p class="text-xl font-semibold text-gray-900">{{ item.judul }}</p>
+                            <p class="mt-3 text-base text-gray-500 truncate cursor-help" title="{{ item.deskripsi }}">{{ item.deskripsi }}</p>
+                        </a>
+                    </div>
+                    <div class="mt-6 flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">{{ item.tanggal|date:"d M Y" }}</p>
+                            <p class="text-sm text-gray-500">{{ item.lokasi }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-gray-500 text-center col-span-3">Belum ada kegiatan terbaru.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

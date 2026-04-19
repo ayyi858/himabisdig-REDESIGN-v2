@@ -1,0 +1,42 @@
+{% extends 'cms/generic_list.html' %}
+
+{% block table_rows %}
+{% for item in items %}
+<tr class="hover:bg-gray-50/50 transition-colors">
+    <td class="px-6 py-4 flex items-center gap-4">
+        {% if item.gambar %}
+            <img src="{{ item.gambar.url }}" class="w-16 h-10 rounded-lg object-cover shadow-sm border border-gray-100" alt="">
+        {% else %}
+            <div class="w-16 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 border border-gray-200">
+                <i class="fas fa-newspaper text-xs"></i>
+            </div>
+        {% endif %}
+        <div>
+            <p class="font-bold text-gray-900 leading-tight">{{ item.judul }}</p>
+            <p class="text-xs text-gray-400">slug: {{ item.slug }}</p>
+        </div>
+    </td>
+    <td class="px-6 py-4">
+        <span class="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-xs font-semibold">
+            {{ item.get_ekosistem_display|default:"Umum" }}
+        </span>
+    </td>
+    <td class="px-6 py-4 text-xs text-gray-500 font-medium">
+        {{ item.tanggal|date:"d M Y" }}
+    </td>
+    <td class="px-6 py-4 text-right">
+        <div class="flex justify-end gap-2">
+             <a href="{% url 'berita_detail' item.slug %}" target="_blank" class="w-8 h-8 flex items-center justify-center bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-200 transition-all shadow-sm" title="Pratinjau">
+                <i class="fas fa-eye text-xs"></i>
+            </a>
+            <a href="{% url 'cms_edit_berita' item.pk %}" class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm" title="Edit">
+                <i class="fas fa-edit text-xs"></i>
+            </a>
+            <a href="{% url 'cms_delete_berita' item.pk %}" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Hapus" onclick="return confirm('Hapus berita ini?')">
+                <i class="fas fa-trash text-xs"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

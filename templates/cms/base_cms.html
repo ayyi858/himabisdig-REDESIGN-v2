@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CMS Dashboard | HIMABISDIG{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-100 font-sans antialiased text-gray-900">
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-900 text-white flex-shrink-0 hidden md:flex flex-col">
+            <div class="p-6">
+                <a href="{% url 'cms_dashboard' %}" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center font-bold">HD</div>
+                    <span class="text-xl font-bold tracking-tight">HIMACMS</span>
+                </a>
+            </div>
+            <nav class="flex-grow px-4 space-y-2 py-4 text-sm font-medium">
+                <a href="{% url 'cms_dashboard' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors {% if request.resolver_match.url_name == 'cms_dashboard' %}bg-primary-600 shadow-lg shadow-primary-900/50 text-white{% else %}text-gray-400{% endif %}">
+                    <i class="fas fa-home w-5"></i> Dashboard
+                </a>
+                <a href="{% url 'cms_list_jabatan' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors {% if 'jabatan' in request.path %}bg-primary-600 shadow-lg shadow-primary-900/50 text-white{% else %}text-gray-400{% endif %}">
+                    <i class="fas fa-id-badge w-5"></i> Kelola Jabatan
+                </a>
+                <a href="{% url 'cms_list_pengurus' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors {% if 'pengurus' in request.path %}bg-primary-600 shadow-lg shadow-primary-900/50 text-white{% else %}text-gray-400{% endif %}">
+                    <i class="fas fa-users w-5"></i> Kelola Pengurus
+                </a>
+                <a href="{% url 'cms_list_berita' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors {% if 'berita' in request.path %}bg-primary-600 shadow-lg shadow-primary-900/50 text-white{% else %}text-gray-400{% endif %}">
+                    <i class="fas fa-newspaper w-5"></i> Kelola Berita
+                </a>
+                <a href="{% url 'cms_manage_kegiatan' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors {% if 'kegiatan' in request.path %}bg-primary-600 shadow-lg shadow-primary-900/50 text-white{% else %}text-gray-400{% endif %}">
+                    <i class="fas fa-calendar-alt w-5"></i> Kelola Kegiatan
+                </a>
+                <a href="{% url 'cms_list_dokumentasi' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors {% if 'dokumentasi' in request.path %}bg-primary-600 shadow-lg shadow-primary-900/50 text-white{% else %}text-gray-400{% endif %}">
+                    <i class="fas fa-camera w-5"></i> Dokumentasi
+                </a>
+                <a href="{% url 'cms_list_pesan' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors {% if 'pesan' in request.path %}bg-primary-600 shadow-lg shadow-primary-900/50 text-white{% else %}text-gray-400{% endif %}">
+                    <i class="fas fa-envelope w-5"></i> Pesan Masuk
+                </a>
+                <a href="{% url 'cms_list_absensi' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 transition-colors mt-4 border border-orange-500/20">
+                    <i class="fas fa-clipboard-check w-5"></i> Daftar Absensi
+                </a>
+            </nav>
+            <div class="p-4 border-t border-gray-100/10">
+                <a href="/" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-globe w-5"></i> Lihat Web
+                </a>
+                <form action="{% url 'cms_logout' %}" method="post" class="mt-2 text-left">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-gray-800 rounded-lg transition-colors">
+                        <i class="fas fa-sign-out-alt w-5"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-grow flex flex-col min-w-0">
+            <!-- Header -->
+            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-8 z-10">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-gray-500"><i class="fas fa-bars text-xl"></i></button>
+                    <h2 class="text-xl font-semibold text-gray-800">{% block header_title %}Panel Admin{% endblock %}</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-gray-500 text-sm hidden sm:block">Halo, <strong>{{ request.user.username }}</strong></span>
+                    <div class="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold">
+                        {{ request.user.username|make_list|first|upper }}
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Body -->
+            <main class="p-8 overflow-y-auto">
+                {% if messages %}
+                    <div class="mb-6 space-y-2">
+                        {% for message in messages %}
+                            <div class="p-4 rounded-lg shadow-sm border-l-4 {% if message.tags == 'success' %}bg-green-50 border-green-500 text-green-800{% elif message.tags == 'warning' %}bg-yellow-50 border-yellow-500 text-yellow-800{% else %}bg-blue-50 border-blue-500 text-blue-800{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

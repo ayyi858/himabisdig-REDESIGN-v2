@@ -1,0 +1,64 @@
+{% extends 'cms/base_cms.html' %}
+{% block title %}Kelola Kegiatan | HIMACMS{% endblock %}
+{% block header_title %}Daftar Kegiatan{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex justify-between items-center">
+    <p class="text-gray-500 font-medium">Kelola kegiatan, pendaftar, dan generate QR absensi.</p>
+    <a href="{% url 'cms_add_kegiatan' %}" class="bg-primary-600 font-bold text-white px-5 py-2.5 rounded-xl hover:bg-primary-700 transition flex items-center gap-2 shadow-lg shadow-primary-500/30 ring-2 ring-primary-500 ring-offset-2">
+        <i class="fas fa-plus"></i> Tambah Kegiatan
+    </a>
+</div>
+
+<div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead class="bg-gray-50 text-gray-400 text-xs font-bold uppercase tracking-widest border-b border-gray-100">
+                <tr>
+                    <th class="px-6 py-4">Informasi Kegiatan</th>
+                    <th class="px-6 py-4">Ekosistem</th>
+                    <th class="px-6 py-4">Tanggal</th>
+                    <th class="px-6 py-4 text-center">Pendaftar</th>
+                    <th class="px-6 py-4 text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for k in kegiatan %}
+                <tr class="hover:bg-gray-50/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-gray-900">{{ k.judul }}</p>
+                        <p class="text-xs text-gray-400 font-medium mt-1"><i class="fas fa-map-marker-alt"></i> {{ k.lokasi }}</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-0.5 text-xs bg-primary-50 text-primary-700 rounded-md font-bold shadow-sm border border-primary-100 uppercase tracking-tighter">
+                            {{ k.get_ekosistem_display|default:"Umum" }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-600 font-medium">
+                        {{ k.tanggal|date:"d M Y" }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="font-bold text-gray-800 bg-gray-100 px-3 py-1 rounded-full text-xs">{{ k.pendaftar.count }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex justify-end gap-2">
+                            <a href="{% url 'cms_kegiatan_peserta' k.pk %}" class="px-3 py-1.5 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-600 hover:text-white transition-all text-sm font-bold shadow-sm">
+                                <i class="fas fa-users mr-1"></i> Peserta & QR
+                            </a>
+                            <a href="{% url 'cms_edit_kegiatan' k.pk %}" class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm" title="Edit">
+                                <i class="fas fa-edit text-xs"></i>
+                            </a>
+                            <a href="{% url 'cms_delete_kegiatan' k.pk %}" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Hapus" onclick="return confirm('Hapus kegiatan ini?')">
+                                <i class="fas fa-trash text-xs"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="p-12 text-center text-gray-500">Belum ada data kegiatan.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

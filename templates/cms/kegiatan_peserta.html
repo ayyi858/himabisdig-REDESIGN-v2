@@ -1,0 +1,109 @@
+{% extends 'cms/base_cms.html' %}
+{% block title %}Peserta: {{ kegiatan.judul }} | HIMACMS{% endblock %}
+{% block header_title %}Manajemen Peserta{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <a href="{% url 'cms_manage_kegiatan' %}" class="text-primary-600 hover:underline flex items-center gap-1 mb-4">
+        <i class="fas fa-arrow-left"></i> Kembali ke Daftar Kegiatan
+    </a>
+    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-8 items-center">
+        <div class="flex-shrink-0 text-center">
+            <h4 class="font-bold text-gray-900 mb-4">QR Code Absensi</h4>
+            <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg inline-block">
+                <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code" class="w-48 h-48">
+            </div>
+            <p class="mt-4 text-xs text-gray-500 max-w-[200px] mx-auto">Scan QR ini untuk mengakses absensi digital kegiatan ini.</p>
+            <a href="{{ qr_url }}" target="_blank" class="mt-2 text-primary-600 text-xs hover:underline block">Buka Link Absensi <i class="fas fa-external-link-alt ml-1"></i></a>
+        </div>
+        <div class="flex-grow">
+            <span class="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-md mb-2 inline-block">{{ kegiatan.get_ekosistem_display|default:"Umum" }}</span>
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-2">{{ kegiatan.judul }}</h1>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                <div class="flex items-center text-gray-600">
+                    <i class="fas fa-calendar-alt w-6 text-primary-500"></i>
+                    <span>{{ kegiatan.tanggal|date:"d F Y, H:i" }}</span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                    <i class="fas fa-map-marker-alt w-6 text-primary-500"></i>
+                    <span>{{ kegiatan.lokasi }}</span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                    <i class="fas fa-cog w-6 text-primary-500"></i>
+                    <span>Mode: <strong>{{ kegiatan.get_mode_seleksi_display }}</strong></span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                    <i class="fas fa-users w-6 text-primary-500"></i>
+                    <span>Total Pendaftar: <strong>{{ peserta.count }}</strong></span>
+                </div>
+            </div>
+            <div class="flex gap-2 mt-8">
+                <a href="{% url 'cms_export_peserta_excel' kegiatan.pk %}" class="bg-blue-600 text-white px-5 py-2.5 rounded-xl hover:bg-blue-700 transition flex items-center gap-2 font-bold shadow-lg shadow-blue-500/30">
+                    <i class="fas fa-file-excel"></i> Excel
+                </a>
+                <a href="{% url 'cms_export_peserta' kegiatan.pk %}" class="bg-green-600 text-white px-5 py-2.5 rounded-xl hover:bg-green-700 transition flex items-center gap-2 font-bold shadow-lg shadow-green-500/30">
+                    <i class="fas fa-file-csv"></i> CSV
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="p-6 border-b border-gray-100">
+        <h4 class="font-bold text-gray-800">Daftar Pendaftar</h4>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead class="bg-gray-50 text-gray-500 text-sm">
+                <tr>
+                    <th class="px-6 py-4 font-semibold uppercase">Nama & Kontak</th>
+                    <th class="px-6 py-4 font-semibold uppercase">Status</th>
+                    <th class="px-6 py-4 font-semibold uppercase">WA Link</th>
+                    <th class="px-6 py-4 font-semibold uppercase text-center">Kelolosan</th>
+                    <th class="px-6 py-4 font-semibold uppercase text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for p in peserta %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-gray-900">{{ p.nama }}</p>
+                        <p class="text-xs text-gray-500">{{ p.email }} | {{ p.no_wa }}</p>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="text-gray-600 capitalize">{{ p.status_pendaftar }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        {% if p.link_wa %}
+                            <a href="{{ p.link_wa }}" target="_blank" class="text-green-600 hover:underline">Link WA</a>
+                        {% else %}
+                            <span class="text-gray-400">-</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="px-2 py-1 text-xs rounded-full inline-block font-medium {% if p.status_kelolosan == 'approved' %}bg-green-100 text-green-700{% elif p.status_kelolosan == 'rejected' %}bg-red-100 text-red-700{% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                            {{ p.get_status_kelolosan_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        {% if p.status_kelolosan == 'pending' %}
+                        <form method="POST" class="flex justify-end gap-2">
+                            {% csrf_token %}
+                            <input type="hidden" name="peserta_id" value="{{ p.id }}">
+                            <button name="action" value="approve" class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-xs transition">Approve</button>
+                            <button name="action" value="reject" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs transition">Reject</button>
+                        </form>
+                        {% else %}
+                        <span class="text-xs text-gray-400 italic">Sudah diproses</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="p-8 text-center text-gray-500">Belum ada pendaftar dalam kegiatan ini.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'cms/base_cms.html' %}
+{% block title %}Kelola {{ model_name }} | HIMACMS{% endblock %}
+{% block header_title %}Daftar {{ model_name }}{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex justify-between items-center">
+    <p class="text-gray-500">Daftar seluruh data {{ model_name }} yang terdaftar di sistem.</p>
+    <div class="flex gap-2">
+        {% if export_excel_url %}
+        <a href="{{ export_excel_url }}" class="bg-blue-600 text-white px-5 py-2.5 rounded-xl hover:bg-blue-700 transition flex items-center gap-2 font-bold shadow-lg shadow-blue-500/30">
+            <i class="fas fa-file-excel"></i> Excel
+        </a>
+        {% endif %}
+        {% if export_url %}
+        <a href="{{ export_url }}" class="bg-green-600 text-white px-5 py-2.5 rounded-xl hover:bg-green-700 transition flex items-center gap-2 font-bold shadow-lg shadow-green-500/30">
+            <i class="fas fa-file-csv"></i> CSV
+        </a>
+        {% endif %}
+        {% if add_url %}
+        <a href="{{ add_url }}" class="bg-primary-600 text-white px-5 py-2.5 rounded-xl hover:bg-primary-700 transition flex items-center gap-2 font-bold shadow-lg shadow-primary-500/30">
+            <i class="fas fa-plus"></i> Tambah {{ model_name }}
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead class="bg-gray-50 text-gray-400 text-xs font-bold uppercase tracking-widest border-b border-gray-100">
+                <tr>
+                    {% for col in columns %}
+                    <th class="px-6 py-4">{{ col }}</th>
+                    {% endfor %}
+                    <th class="px-6 py-4 text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for item in items %}
+                <tr class="hover:bg-gray-50/50 transition-colors">
+                    {% block table_rows %}
+                    <!-- Baris data akan diisi oleh template spesifik jika perlu, atau default render -->
+                    {% endblock %}
+                </tr>
+                {% empty %}
+                <tr><td colspan="10" class="p-12 text-center text-gray-500">Belum ada data {{ model_name }} tersedia.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

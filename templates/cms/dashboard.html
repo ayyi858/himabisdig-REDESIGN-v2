@@ -1,0 +1,125 @@
+{% extends 'cms/base_cms.html' %}
+{% block title %}Dashboard | HIMACMS{% endblock %}
+{% block header_title %}Beranda Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div>
+            <p class="text-sm font-medium text-gray-500 mb-1">Total Pengurus</p>
+            <h3 class="text-3xl font-bold">{{ total_pengurus }}</h3>
+        </div>
+        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-users text-xl"></i>
+        </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div>
+            <p class="text-sm font-medium text-gray-500 mb-1">Total Kegiatan</p>
+            <h3 class="text-3xl font-bold">{{ total_kegiatan }}</h3>
+        </div>
+        <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-calendar-check text-xl"></i>
+        </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div>
+            <p class="text-sm font-medium text-gray-500 mb-1">Total Peserta</p>
+            <h3 class="text-3xl font-bold">{{ total_peserta }}</h3>
+        </div>
+        <div class="w-12 h-12 bg-green-50 text-green-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-user-graduate text-xl"></i>
+        </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div>
+            <p class="text-sm font-medium text-gray-500 mb-1">Total Absensi</p>
+            <h3 class="text-3xl font-bold">{{ total_absensi }}</h3>
+        </div>
+        <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-qrcode text-xl"></i>
+        </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div>
+            <p class="text-sm font-medium text-gray-500 mb-1">Pesan Baru</p>
+            <h3 class="text-3xl font-bold">{{ total_pesan }}</h3>
+        </div>
+        <div class="w-12 h-12 bg-red-50 text-red-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-envelope-open-text text-xl"></i>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100">
+        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+            <h4 class="font-bold text-gray-800">Pendaftar Terbaru</h4>
+            <a href="{% url 'cms_manage_kegiatan' %}" class="text-primary-600 text-sm hover:underline">Lihat Semua</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 text-gray-500 text-sm">
+                    <tr>
+                        <th class="px-6 py-4 font-semibold uppercase tracking-wider">Nama Peserta</th>
+                        <th class="px-6 py-4 font-semibold uppercase tracking-wider">Kegiatan</th>
+                        <th class="px-6 py-4 font-semibold uppercase tracking-wider text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {% for p in recent_peserta %}
+                    <tr>
+                        <td class="px-6 py-4">
+                            <p class="font-medium text-gray-900">{{ p.nama }}</p>
+                            <p class="text-xs text-gray-500">{{ p.email }}</p>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ p.kegiatan.judul }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-2 py-1 text-xs rounded-full inline-block font-medium {% if p.status_kelolosan == 'approved' %}bg-green-100 text-green-700{% elif p.status_kelolosan == 'rejected' %}bg-red-100 text-red-700{% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                                {{ p.get_status_kelolosan_display }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="p-8 text-center text-gray-500">Belum ada pendaftar baru.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h4 class="font-bold text-gray-800 mb-6">Aksi Cepat</h4>
+        <div class="grid grid-cols-1 gap-4">
+            <a href="/admin/app/kegiatan/add/" class="flex items-center gap-4 p-4 rounded-lg bg-gray-50 border border-gray-200 hover:border-primary-500 transition-all hover:bg-primary-50 group">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-primary-600 shadow-sm border border-gray-100">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800">Buat Kegiatan</p>
+                    <p class="text-xs text-gray-500">Tambah event baru ke website</p>
+                </div>
+            </a>
+            <a href="/admin/app/berita/add/" class="flex items-center gap-4 p-4 rounded-lg bg-gray-50 border border-gray-200 hover:border-primary-500 transition-all hover:bg-primary-50 group">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-primary-600 shadow-sm border border-gray-100">
+                    <i class="fas fa-pen-nib"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800">Tulis Berita</p>
+                    <p class="text-xs text-gray-500">Posting pengumuman terbaru</p>
+                </div>
+            </a>
+            <a href="/admin/app/pengurus/add/" class="flex items-center gap-4 p-4 rounded-lg bg-gray-50 border border-gray-200 hover:border-primary-500 transition-all hover:bg-primary-50 group">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-primary-600 shadow-sm border border-gray-100">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800">Tambah Pengurus</p>
+                    <p class="text-xs text-gray-500">Kelola data anggota himpunan</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

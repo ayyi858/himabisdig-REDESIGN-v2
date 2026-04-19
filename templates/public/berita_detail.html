@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}{{ berita.judul }} | HIMABISDIG UNM{% endblock %}
+
+{% block content %}
+<div class="bg-white py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="mb-8">
+            <a href="{% url 'berita_list' %}" class="text-sm font-medium text-primary-600 hover:text-primary-800 flex items-center gap-1">
+                <i class="fas fa-arrow-left"></i> Kembali ke List Berita
+            </a>
+        </div>
+
+        <div class="text-center">
+            <p class="text-sm font-semibold text-primary-600 tracking-wide uppercase mb-2">
+                {% if berita.ekosistem %}{{ berita.get_ekosistem_display }}{% else %}Umum{% endif %}
+            </p>
+            <h1 class="block mt-2 text-3xl leading-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl">{{ berita.judul }}</h1>
+            <p class="mt-4 text-sm text-gray-500"><i class="fas fa-calendar-alt mr-2"></i>Diterbitkan pada {{ berita.tanggal|date:"d M Y" }}</p>
+        </div>
+
+        <div class="mt-10 overflow-hidden rounded-xl shadow-lg">
+            {% if berita.gambar %}
+                <img class="w-full h-auto max-h-[500px] object-cover" src="{{ berita.gambar.url }}" alt="{{ berita.judul }}">
+            {% else %}
+                <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-image text-5xl"></i></div>
+            {% endif %}
+        </div>
+
+        <div class="mt-12 prose prose-lg prose-primary mx-auto text-gray-700">
+            {{ berita.konten|linebreaks }}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

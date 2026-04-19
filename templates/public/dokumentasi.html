@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Dokumentasi | HIMABISDIG UNM{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 py-12 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Dokumentasi</h1>
+            <p class="mt-4 text-xl text-gray-500">Galeri foto dan video dari berbagai kegiatan HIMABISDIG.</p>
+        </div>
+
+        <!-- Filter / Kategori Kegiatan -->
+        <div class="mb-10 text-center">
+            <form method="GET" action="{% url 'dokumentasi' %}">
+                <label for="kegiatan" class="sr-only">Filter Kegiatan</label>
+                <div class="inline-flex shadow-sm rounded-md align-middle items-center gap-2">
+                    <span class="text-gray-500 font-medium whitespace-nowrap">Filter Kegiatan: </span>
+                    <select name="kegiatan" id="kegiatan" onchange="this.form.submit()" class="block w-full py-2 pl-3 pr-10 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md border min-w-[200px]">
+                        <option value="">Semua Dokumentasi</option>
+                        {% for k in terkait_kegiatan %}
+                            <option value="{{ k.id }}" {% if selected_kegiatan == k.id|stringformat:"s" %}selected{% endif %}>{{ k.judul }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for item in dokumentasi %}
+            <div class="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                <div class="aspect-w-1 aspect-h-1 w-full bg-gray-200">
+                    {% if item.foto %}
+                        <img src="{{ item.foto.url }}" alt="{{ item.deskripsi }}" class="w-full h-64 object-cover object-center group-hover:opacity-75 transition-opacity">
+                    {% else %}
+                        <div class="w-full h-64 flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>
+                    {% endif %}
+                </div>
+                <div class="p-4 bg-white border-t border-gray-100">
+                    <p class="text-sm font-medium text-primary-600 truncate">
+                        {% if item.kegiatan %}{{ item.kegiatan.judul }}{% else %}Umum{% endif %}
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1 truncate" title="{{ item.deskripsi }}">{{ item.deskripsi|default:"Brak deskripsi" }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full py-20 text-center">
+                <i class="fas fa-camera-retro text-6xl text-gray-300 mb-4 block"></i>
+                <p class="text-xl text-gray-500 font-medium">Belum ada dokumentasi tersedia.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

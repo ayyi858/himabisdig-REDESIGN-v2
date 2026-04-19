@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HIMABISDIG UNM{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="font-sans antialiased text-gray-800 bg-gray-50 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0 flex items-center gap-2">
+                        <!-- Placeholder Logo -->
+                        <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-sm">HD</div>
+                        <span class="font-bold text-xl text-gray-900 tracking-tight">HIMABISDIG</span>
+                    </a>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="/" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">Beranda</a>
+                        <a href="/tentang-kami/" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">Tentang Kami</a>
+                        
+                        <!-- Dropdown Ekosistem -->
+                        <div class="relative group pt-1">
+                            <button class="border-transparent text-gray-500 hover:text-gray-900 inline-flex items-center pt-3 pb-4 border-b-2 text-sm font-medium transition-colors">
+                                Ekosistem <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            </button>
+                            <div class="absolute left-0 mt-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <div class="py-1" role="menu">
+                                    <a href="/ekosistem/data_analyst" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-600">Data Analyst & Visualisasi</a>
+                                    <a href="/ekosistem/saham_crypto" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-600">Saham & Crypto</a>
+                                    <a href="/ekosistem/desain_video" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-600">Desain & Videography</a>
+                                    <a href="/ekosistem/humaniora" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-600">Humaniora</a>
+                                    <a href="/ekosistem/minat_bakat" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-600">Minat & Bakat</a>
+                                    <a href="/ekosistem/kewirausahaan" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-600">Kewirausahaan</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="/berita/" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">Berita</a>
+                        <a href="/kegiatan/" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">Kegiatan</a>
+                        <a href="/dokumentasi/" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">Dokumentasi</a>
+                        <a href="/kontak/" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">Kontak</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center">
+                    <a href="/cms/login/" class="text-sm text-primary-600 font-medium hover:text-primary-700 transition">Login CMS <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-16">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-gray-900 font-bold text-xs">HD</div>
+                        HIMABISDIG UNM
+                    </h3>
+                    <p class="text-gray-400 text-sm mb-4">Himpunan Mahasiswa Bisnis Digital Universitas Negeri Makassar. Mewadahi mahasiswa dalam mengembangkan potensi di bidang bisnis digital.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube text-xl"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Tautan Cepat</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="/tentang-kami/" class="hover:text-white transition">Tentang Kami</a></li>
+                        <li><a href="/berita/" class="hover:text-white transition">Berita & Artikel</a></li>
+                        <li><a href="/kegiatan/" class="hover:text-white transition">Info Kegiatan</a></li>
+                        <li><a href="/dokumentasi/" class="hover:text-white transition">Dokumentasi</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Hubungi Kami</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-start gap-2"><i class="fas fa-map-marker-alt mt-1"></i> Kampus Phinisi UNM, Makassar</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-envelope"></i> admin@himabisdig.unm.ac.id</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-500">
+                &copy; 2026 HIMABISDIG UNM. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

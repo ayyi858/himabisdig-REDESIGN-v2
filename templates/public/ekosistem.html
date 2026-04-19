@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}{{ nama_ekosistem }} | Ekosistem | HIMABISDIG UNM{% endblock %}
+
+{% block content %}
+<div class="bg-primary-700 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+        <h3 class="text-primary-200 tracking-wide uppercase font-semibold text-sm mb-2">Ekosistem HIMABISDIG</h3>
+        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">{{ nama_ekosistem }}</h1>
+    </div>
+</div>
+
+<div class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Kegiatan Terkait -->
+        <div class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 border-l-4 border-primary-500 pl-3">Kegiatan {{ nama_ekosistem }}</h2>
+            </div>
+            
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {% for item in kegiatan_terkait %}
+                <div class="flex flex-col rounded-lg shadow-sm overflow-hidden bg-white hover:shadow-md transition-shadow border border-gray-200">
+                    <div class="flex-shrink-0">
+                        {% if item.poster %}
+                            <img class="h-48 w-full object-cover" src="{{ item.poster.url }}" alt="{{ item.judul }}">
+                        {% else %}
+                            <div class="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>
+                        {% endif %}
+                    </div>
+                    <div class="flex-1 p-6 flex flex-col justify-between">
+                        <div class="flex-1">
+                            <a href="{% url 'kegiatan_detail' item.pk %}" class="block mt-2">
+                                <p class="text-xl font-semibold text-gray-900">{{ item.judul }}</p>
+                                <p class="mt-3 text-sm text-gray-500 truncate" title="{{ item.deskripsi }}">{{ item.deskripsi }}</p>
+                            </a>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs text-gray-400">
+                            <i class="fas fa-calendar-alt mr-2"></i> {{ item.tanggal|date:"d M Y" }}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full py-8 text-center text-gray-500 bg-white rounded-lg border border-dashed border-gray-300">
+                    Belum ada kegiatan terkait ekosistem ini.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Berita Terkait -->
+        <div class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 border-l-4 border-primary-500 pl-3">Artikel & Berita</h2>
+            </div>
+            
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                {% for b in berita_terkait %}
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col border border-gray-100 group cursor-pointer hover:shadow-md transition-shadow">
+                    <a href="{% url 'berita_detail' b.slug %}" class="flex flex-col h-full">
+                        <div class="flex-shrink-0">
+                            {% if b.gambar %}
+                                <img class="h-40 w-full object-cover group-hover:scale-105 transition-transform duration-300" src="{{ b.gambar.url }}" alt="{{ b.judul }}">
+                            {% else %}
+                                <div class="h-40 w-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <p class="text-xs text-gray-400 mb-1 flex items-center gap-1"><i class="fas fa-clock"></i> {{ b.tanggal|date:"d M Y" }}</p>
+                            <h3 class="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">{{ b.judul }}</h3>
+                            <p class="text-sm text-gray-500 flex-1 line-clamp-3">{{ b.konten|truncatewords:20 }}</p>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <div class="col-span-full py-8 text-center text-gray-500 bg-white rounded-lg border border-dashed border-gray-300">
+                    Belum ada berita terkait ekosistem ini.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

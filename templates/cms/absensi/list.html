@@ -1,0 +1,44 @@
+{% extends 'cms/generic_list.html' %}
+
+{% block table_rows %}
+{% for item in items %}
+<tr class="hover:bg-gray-50/50 transition-colors">
+    <td class="px-6 py-4">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center text-primary-600 font-bold border border-primary-100 uppercase italic">
+                {{ item.status_kehadiran|slice:":2" }}
+            </div>
+            <div>
+                <p class="font-bold text-gray-900 leading-tight">{{ item.nama }}</p>
+                <p class="text-xs text-gray-400 font-medium">Kegiatan: <span class="text-primary-600">{{ item.kegiatan.judul }}</span></p>
+            </div>
+        </div>
+    </td>
+    <td class="px-6 py-4">
+        <p class="text-sm font-semibold text-gray-700">{{ item.waktu|date:"H:i" }}</p>
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ item.waktu|date:"d M Y" }}</p>
+    </td>
+    <td class="px-6 py-4">
+        {% if item.tanda_tangan %}
+            <div class="flex items-center gap-2">
+                <div class="bg-gray-50 rounded-lg p-1 border border-gray-100 hover:scale-150 transition-transform origin-left cursor-zoom-in w-24 h-12 flex items-center justify-center overflow-hidden">
+                    <img src="{{ item.tanda_tangan }}" class="max-w-full max-h-full object-contain invert hue-rotate-180" alt="Paraf">
+                </div>
+                <a href="{{ item.tanda_tangan }}" download="paraf_{{ item.nama|slugify }}_{{ item.id }}.png" class="w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-500 rounded-lg hover:bg-primary-600 hover:text-white transition-all shadow-sm" title="Download Paraf (PNG)">
+                    <i class="fas fa-download text-xs"></i>
+                </a>
+            </div>
+        {% else %}
+            <span class="text-xs text-gray-400 italic">Tidak ada paraf</span>
+        {% endif %}
+    </td>
+    <td class="px-6 py-4 text-right">
+        <div class="flex justify-end gap-2">
+            <a href="{% url 'cms_delete_absensi' item.pk %}" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus data absensi {{ item.nama }}?')">
+                <i class="fas fa-trash text-xs"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

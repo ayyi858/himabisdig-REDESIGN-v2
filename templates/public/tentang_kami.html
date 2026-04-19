@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Tentang Kami | HIMABISDIG UNM{% endblock %}
+
+{% block content %}
+<div class="bg-primary-700 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Tentang HIMABISDIG</h1>
+        <p class="mt-4 text-xl text-primary-200">Himpunan Mahasiswa Bisnis Digital Universitas Negeri Makassar</p>
+    </div>
+</div>
+
+<div class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="prose prose-lg mx-auto text-gray-500">
+            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">Sejarah Singkat</h2>
+            <p>HIMABISDIG dibentuk sebagai wadah aspirasi dan pengembangan potensi bagi seluruh mahasiswa program studi Bisnis Digital di Universitas Negeri Makassar. Kami berfokus pada kolaborasi, inovasi, dan peningkatan kompetensi di era digital.</p>
+            
+            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl mt-12">Visi & Misi</h2>
+            <h3>Visi</h3>
+            <p>Menjadi himpunan mahasiswa yang unggul, inovatif, dan adaptif dalam pengembangan ekosistem bisnis digital berlandaskan semangat kolaborasi.</p>
+            <h3>Misi</h3>
+            <ul>
+                <li>Mewadahi dan menyalurkan minat, bakat, serta keahlian mahasiswa Bisnis Digital.</li>
+                <li>Membangun relasi yang sinergis dengan berbagai pihak eksternal maupun internal.</li>
+                <li>Menyelenggarakan kegiatan yang meningkatkan kompetensi hard skill dan soft skill mahasiswa.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl mb-12">Struktur Pengurus</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {% for p in pengurus %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col items-center p-6 text-center">
+                {% if p.foto %}
+                    <img class="w-32 h-32 rounded-full object-cover mb-4 shadow-sm" src="{{ p.foto.url }}" alt="{{ p.nama }}">
+                {% else %}
+                    <div class="w-32 h-32 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 text-4xl mb-4 shadow-sm">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+                <h3 class="text-lg font-bold text-gray-900">{{ p.nama }}</h3>
+                <p class="text-sm font-medium text-primary-600 mb-2">{{ p.jabatan }}</p>
+                <p class="text-xs text-gray-500">Periode {{ p.periode }}</p>
+            </div>
+            {% empty %}
+            <p class="col-span-full text-gray-500">Data pengurus belum tersedia.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
