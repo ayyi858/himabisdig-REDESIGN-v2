@@ -2,35 +2,45 @@
 {% block title %}{{ berita.judul }} | HIMABISDIG UNM{% endblock %}
 
 {% block content %}
-<div class="bg-white py-12">
+<article class="pt-32 pb-32 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="mb-8">
-            <a href="{% url 'berita_list' %}" class="text-sm font-medium text-primary-600 hover:text-primary-800 flex items-center gap-1">
-                <i class="fas fa-arrow-left"></i> Kembali ke List Berita
+        <!-- Meta -->
+        <div class="flex flex-col items-center text-center mb-16 space-y-6" data-aos="fade-down">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-50 border border-slate-100 rounded-full">
+                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 italic">{{ berita.get_ekosistem_display|default:"Digital News" }}</span>
+            </div>
+            <h1 class="text-4xl md:text-7xl font-heading font-bold text-slate-950 leading-tight italic">
+                {{ berita.judul }}
+            </h1>
+            <div class="flex items-center gap-6 text-slate-400 font-bold text-[10px] uppercase tracking-widest">
+                <span>By HIMABISDIG Editorial</span>
+                <span class="w-1 h-1 bg-slate-200 rounded-full"></span>
+                <span>{{ berita.tanggal|date:"d F Y" }}</span>
+            </div>
+        </div>
+
+        <!-- Hero Image -->
+        {% if berita.gambar %}
+        <div class="mb-20 rounded-[3.5rem] overflow-hidden shadow-2xl border border-slate-100" data-aos="zoom-in">
+            <img src="{{ berita.gambar.url }}" class="w-full h-auto" alt="{{ berita.judul }}">
+        </div>
+        {% endif %}
+
+        <!-- Content -->
+        <div class="prose prose-lg max-w-none prose-slate prose-headings:font-heading prose-headings:italic prose-headings:font-bold prose-p:text-slate-600 prose-p:leading-relaxed prose-p:font-medium p-8" data-aos="fade-up">
+            {{ berita.konten|safe }}
+        </div>
+
+        <!-- Footer / Share -->
+        <div class="mt-24 pt-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">
+            <a href="{% url 'berita_list' %}" class="inline-flex items-center gap-3 text-slate-400 hover:text-slate-950 font-bold text-[10px] uppercase tracking-widest transition-all">
+                <i class="fas fa-arrow-left"></i> Kembali ke Berita
             </a>
+            <div class="flex gap-4">
+                <a href="#" class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-950 hover:text-white transition-all"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-950 hover:text-white transition-all"><i class="fab fa-twitter"></i></a>
+            </div>
         </div>
-
-        <div class="text-center">
-            <p class="text-sm font-semibold text-primary-600 tracking-wide uppercase mb-2">
-                {% if berita.ekosistem %}{{ berita.get_ekosistem_display }}{% else %}Umum{% endif %}
-            </p>
-            <h1 class="block mt-2 text-3xl leading-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl">{{ berita.judul }}</h1>
-            <p class="mt-4 text-sm text-gray-500"><i class="fas fa-calendar-alt mr-2"></i>Diterbitkan pada {{ berita.tanggal|date:"d M Y" }}</p>
-        </div>
-
-        <div class="mt-10 overflow-hidden rounded-xl shadow-lg">
-            {% if berita.gambar %}
-                <img class="w-full h-auto max-h-[500px] object-cover" src="{{ berita.gambar.url }}" alt="{{ berita.judul }}">
-            {% else %}
-                <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-image text-5xl"></i></div>
-            {% endif %}
-        </div>
-
-        <div class="mt-12 prose prose-lg prose-primary mx-auto text-gray-700">
-            {{ berita.konten|linebreaks }}
-        </div>
-
     </div>
-</div>
+</article>
 {% endblock %}

@@ -1,0 +1,153 @@
+/* 
+ * HIMABISDIG - Home Page Styles (CLEAN VERSION)
+ * Created: July 2025
+ * Fixed: Konflik CSS diselesaikan, slider ekosistem dipertahankan
+ */
+
+:root {
+    --home-primary: #0A2463;
+    --home-primary-light: #3E92CC;
+    --home-primary-dark: #071A4A;
+    --home-secondary: #F7931E;
+    --home-secondary-light: #FFA500;
+    --home-secondary-dark: #E67E00;
+    
+    --home-gradient-primary: linear-gradient(135deg, var(--home-primary), var(--home-primary-light));
+    --home-gradient-secondary: linear-gradient(135deg, var(--home-secondary), var(--home-secondary-light));
+    --home-gradient-hero: linear-gradient(135deg, rgba(10, 36, 99, 0.8), rgba(62, 146, 204, 0.7));
+}
+
+.home-text-gradient {
+    background: var(--home-gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.home-text-warning {
+    color: var(--home-secondary) !important;
+}
+
+.hero-with-background {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--home-gradient-hero);
+    z-index: 2;
+}
+
+.hero-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px, 30px 30px;
+    opacity: 0.4;
+    z-index: 3;
+}
+
+.btn-shine {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+    transform: rotate(30deg);
+    transition: all 0.8s ease;
+    opacity: 0;
+}
+
+.btn-shine:hover::after {
+    opacity: 1;
+    left: 100%;
+    top: 100%;
+}
+
+/* Slider Tracks - SEAMLESS LOOP */
+.ekosistem-row {
+    position: relative;
+    overflow: hidden;
+    height: 160px;
+}
+
+.slider-track-1 {
+    display: flex;
+    animation: slideRight 40s linear infinite;
+    width: calc(320px * 12);
+}
+
+.slider-track-2 {
+    display: flex;
+    animation: slideLeft 40s linear infinite;
+    width: calc(320px * 12);
+}
+
+@keyframes slideRight {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-320px * 6)); }
+}
+
+@keyframes slideLeft {
+    0% { transform: translateX(calc(-320px * 6)); }
+    100% { transform: translateX(0); }
+}
+
+.ekosistem-box {
+    width: 320px;
+    padding: 0 10px;
+    flex-shrink: 0;
+}
+
+.ekosistem-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.ekosistem-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* CTA Section */
+.cta-box {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border-radius: 2rem;
+    overflow: hidden;
+}
+
+.btn-cta-contact {
+    background: #F7931E;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-weight: 800;
+    transition: all 0.3s ease;
+}
+
+.btn-cta-contact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(247, 147, 30, 0.4);
+}

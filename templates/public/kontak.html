@@ -1,105 +1,79 @@
 {% extends 'base.html' %}
-{% block title %}Kontak Kami | HIMABISDIG UNM{% endblock %}
+{% block title %}Hubungi Kami | HIMABISDIG UNM{% endblock %}
 
 {% block content %}
-<div class="bg-white py-16">
+<!-- Page Header -->
+<section class="pt-32 pb-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-slate-50 border border-slate-100 rounded-full mb-10">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] italic">Get In Touch</span>
+        </div>
+        <h1 class="text-5xl md:text-8xl font-heading font-bold text-slate-950 mb-8 leading-none italic" data-aos="fade-down">Kontak Kami</h1>
+        <p class="text-xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+            Punya pertanyaan atau ingin berkolaborasi? Kami siap mendengar aspirasi dan inovasi Anda.
+        </p>
+    </div>
+</section>
+
+<!-- Contact Bento Grid -->
+<section class="pb-32 bg-[#fcfcfd]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {% if messages %}
-        <div class="max-w-3xl mx-auto mb-8">
-            {% for message in messages %}
-            <div class="p-4 rounded-md bg-green-50 text-green-800 border-l-4 border-green-400 shadow-sm">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-check-circle text-green-400"></i>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium">{{ message }}</p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <div class="max-w-3xl mx-auto text-center mb-16">
-            <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Hubungi Kami</h1>
-            <p class="mt-4 text-xl text-gray-500">Punya pertanyaan, saran, atau peluang kolaborasi? Jangan ragu untuk menghubungi kami.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            
-            <div class="bg-gray-50 rounded-lg p-8 custom-shadow shadow-md">
-                <h3 class="text-2xl font-bold text-gray-900 mb-6">Informasi Kontak</h3>
-                
-                <div class="space-y-6">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 mt-1">
-                            <div class="flex items-center justify-center h-10 w-10 rounded-md bg-primary-100 text-primary-600">
-                                <i class="fas fa-envelope text-lg"></i>
-                            </div>
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="text-lg font-medium text-gray-900">Email</h4>
-                            <p class="mt-1 text-gray-500">admin@himabisdig.unm.ac.id</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 mt-1">
-                            <div class="flex items-center justify-center h-10 w-10 rounded-md bg-primary-100 text-primary-600">
-                                <i class="fas fa-map-marker-alt text-lg"></i>
-                            </div>
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="text-lg font-medium text-gray-900">Alamat</h4>
-                            <p class="mt-1 text-gray-500">Kampus Phinisi UNM<br>Jl. A. P. Pettarani, Makassar<br>Sulawesi Selatan</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 mt-1">
-                            <div class="flex items-center justify-center h-10 w-10 rounded-md bg-primary-100 text-primary-600">
-                                <i class="fas fa-share-alt text-lg"></i>
-                            </div>
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="text-lg font-medium text-gray-900">Sosial Media</h4>
-                            <div class="mt-1 flex space-x-4">
-                                <a href="#" class="text-gray-400 hover:text-primary-600 transition"><i class="fab fa-instagram text-2xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-primary-600 transition"><i class="fab fa-linkedin text-2xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-primary-600 transition"><i class="fab fa-youtube text-2xl"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg p-8 border border-gray-100 shadow-xl">
-                <h3 class="text-2xl font-bold text-gray-900 mb-6">Kirim Pesan</h3>
-                <form action="{% url 'kontak' %}" method="POST" class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Form Section -->
+            <div class="lg:col-span-8 bg-white p-10 md:p-16 rounded-[3.5rem] shadow-premium border border-slate-50" data-aos="fade-right">
+                <form method="POST" class="space-y-8">
                     {% csrf_token %}
-                    <div>
-                        <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                        <input type="text" name="nama" id="nama" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm py-2 px-3 border">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Nama Lengkap</label>
+                            <input type="text" name="nama" required class="w-full bg-slate-50 border-none rounded-3xl p-5 text-slate-950 font-bold focus:ring-2 focus:ring-slate-950 transition-all placeholder:text-slate-300" placeholder="Contoh: Andi Wijaya">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Alamat Email</label>
+                            <input type="email" name="email" required class="w-full bg-slate-50 border-none rounded-3xl p-5 text-slate-950 font-bold focus:ring-2 focus:ring-slate-950 transition-all placeholder:text-slate-300" placeholder="andi@example.com">
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Pesan Anda</label>
+                        <textarea name="pesan" rows="6" required class="w-full bg-slate-50 border-none rounded-[2rem] p-6 text-slate-950 font-bold focus:ring-2 focus:ring-slate-950 transition-all placeholder:text-slate-300" placeholder="Apa yang ingin Anda sampaikan?"></textarea>
                     </div>
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email Utama</label>
-                        <input type="email" name="email" id="email" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm py-2 px-3 border">
-                    </div>
-                    <div>
-                        <label for="pesan" class="block text-sm font-medium text-gray-700">Isi Pesan</label>
-                        <textarea name="pesan" id="pesan" rows="4" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm py-2 px-3 border"></textarea>
-                    </div>
-                    <div>
-                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition">
-                            Kirim Sekarang
+                        <button type="submit" class="w-full bg-slate-950 text-white py-5 rounded-full font-bold uppercase tracking-[0.3em] text-[10px] shadow-xl shadow-slate-950/20 hover:shadow-slate-950/40 hover:-translate-y-1 transition-all"> 
+                            Kirim Pesan <i class="fas fa-paper-plane ml-2"></i>
                         </button>
                     </div>
                 </form>
             </div>
 
+            <!-- Address Section -->
+            <div class="lg:col-span-4 space-y-8">
+                <!-- Location -->
+                <div class="bg-indigo-600 p-10 rounded-[3rem] text-white shadow-2xl" data-aos="fade-left" data-aos-delay="100">
+                    <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-10">
+                        <i class="fas fa-map-marked-alt text-xl text-white"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-2xl mb-6 italic">Sekretariat</h3>
+                    <p class="text-indigo-100 font-medium leading-relaxed opacity-80">
+                        Pusat Kewirausahaan, Lab Bisnis Digital. Kampus FEB UNM, Makassar.
+                    </p>
+                </div>
+                
+                <!-- Online Presence -->
+                <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="text-slate-950 font-bold text-xs uppercase tracking-widest mb-8">Social Connect</h3>
+                    <div class="space-y-6">
+                        <a href="#" class="flex items-center gap-4 group">
+                            <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-slate-950 group-hover:text-white transition-all"><i class="fab fa-instagram"></i></div>
+                            <span class="text-slate-950 font-bold text-sm">@himabisdig_unm</span>
+                        </a>
+                        <a href="#" class="flex items-center gap-4 group">
+                            <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-slate-950 group-hover:text-white transition-all"><i class="fab fa-whatsapp"></i></div>
+                            <span class="text-slate-950 font-bold text-sm">+62 821-xxxx-xxxx</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

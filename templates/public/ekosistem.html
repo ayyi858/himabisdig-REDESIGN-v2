@@ -1,85 +1,102 @@
 {% extends 'base.html' %}
-{% block title %}{{ nama_ekosistem }} | Ekosistem | HIMABISDIG UNM{% endblock %}
+{% block title %}Ekosistem: {{ nama_ekosistem }} | HIMABISDIG UNM{% endblock %}
 
 {% block content %}
-<div class="bg-primary-700 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-        <h3 class="text-primary-200 tracking-wide uppercase font-semibold text-sm mb-2">Ekosistem HIMABISDIG</h3>
-        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">{{ nama_ekosistem }}</h1>
-    </div>
-</div>
-
-<div class="py-12 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <!-- Kegiatan Terkait -->
-        <div class="mb-16">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-3xl font-bold text-gray-900 border-l-4 border-primary-500 pl-3">Kegiatan {{ nama_ekosistem }}</h2>
-            </div>
-            
-            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {% for item in kegiatan_terkait %}
-                <div class="flex flex-col rounded-lg shadow-sm overflow-hidden bg-white hover:shadow-md transition-shadow border border-gray-200">
-                    <div class="flex-shrink-0">
-                        {% if item.poster %}
-                            <img class="h-48 w-full object-cover" src="{{ item.poster.url }}" alt="{{ item.judul }}">
-                        {% else %}
-                            <div class="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>
-                        {% endif %}
-                    </div>
-                    <div class="flex-1 p-6 flex flex-col justify-between">
-                        <div class="flex-1">
-                            <a href="{% url 'kegiatan_detail' item.pk %}" class="block mt-2">
-                                <p class="text-xl font-semibold text-gray-900">{{ item.judul }}</p>
-                                <p class="mt-3 text-sm text-gray-500 truncate" title="{{ item.deskripsi }}">{{ item.deskripsi }}</p>
-                            </a>
-                        </div>
-                        <div class="mt-4 flex items-center text-xs text-gray-400">
-                            <i class="fas fa-calendar-alt mr-2"></i> {{ item.tanggal|date:"d M Y" }}
-                        </div>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="col-span-full py-8 text-center text-gray-500 bg-white rounded-lg border border-dashed border-gray-300">
-                    Belum ada kegiatan terkait ekosistem ini.
-                </div>
-                {% endfor %}
-            </div>
+<!-- Page Header -->
+<section class="pt-32 pb-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-50 border border-slate-100 rounded-full mb-10">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 italic">Specialized Ecosystem</span>
         </div>
+        <h1 class="text-5xl md:text-8xl font-heading font-bold text-slate-950 mb-8 leading-none italic" data-aos="fade-down">
+            {{ nama_ekosistem }}
+        </h1>
+        <p class="text-xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+            Menelusuri jejak inovasi dan kolaborasi dalam lingkup {{ nama_ekosistem }} di HIMABISDIG UNM.
+        </p>
+    </div>
+</section>
 
-        <!-- Berita Terkait -->
-        <div class="mb-16">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-3xl font-bold text-gray-900 border-l-4 border-primary-500 pl-3">Artikel & Berita</h2>
-            </div>
+<!-- Content Sections (Bento Layout) -->
+<section class="pb-32 bg-[#fcfcfd]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                {% for b in berita_terkait %}
-                <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col border border-gray-100 group cursor-pointer hover:shadow-md transition-shadow">
-                    <a href="{% url 'berita_detail' b.slug %}" class="flex flex-col h-full">
-                        <div class="flex-shrink-0">
-                            {% if b.gambar %}
-                                <img class="h-40 w-full object-cover group-hover:scale-105 transition-transform duration-300" src="{{ b.gambar.url }}" alt="{{ b.judul }}">
-                            {% else %}
-                                <div class="h-40 w-full bg-gray-200"></div>
+            <!-- Berita Terkait -->
+            <div class="lg:col-span-12">
+                 <div class="flex items-center justify-between mb-12">
+                     <h2 class="text-3xl font-heading font-bold text-slate-950 italic">Warta Terkait</h2>
+                     <div class="h-[1px] flex-grow mx-8 bg-slate-100"></div>
+                 </div>
+                 <div class="grid md:grid-cols-3 gap-8">
+                    {% for item in berita_terkait %}
+                    <article class="bento-card bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden group" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                        <div class="h-48 overflow-hidden relative">
+                            {% if item.gambar %}
+                            <img src="{{ item.gambar.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="{{ item.judul }}">
                             {% endif %}
                         </div>
-                        <div class="p-4 flex-1 flex flex-col">
-                            <p class="text-xs text-gray-400 mb-1 flex items-center gap-1"><i class="fas fa-clock"></i> {{ b.tanggal|date:"d M Y" }}</p>
-                            <h3 class="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">{{ b.judul }}</h3>
-                            <p class="text-sm text-gray-500 flex-1 line-clamp-3">{{ b.konten|truncatewords:20 }}</p>
+                        <div class="p-8 space-y-4">
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-slate-400">{{ item.tanggal|date:"d M Y" }}</span>
+                            <h3 class="text-lg font-bold text-slate-950 leading-tight italic"><a href="{% url 'berita_detail' item.slug %}">{{ item.judul }}</a></h3>
                         </div>
-                    </a>
-                </div>
-                {% empty %}
-                <div class="col-span-full py-8 text-center text-gray-500 bg-white rounded-lg border border-dashed border-gray-300">
-                    Belum ada berita terkait ekosistem ini.
-                </div>
-                {% endfor %}
+                    </article>
+                    {% empty %}
+                    <div class="col-span-full py-16 text-center bg-white rounded-[3rem] border border-slate-100">
+                        <p class="text-slate-300 font-bold uppercase tracking-widest text-[10px] italic">Belum ada berita di ekosistem ini</p>
+                    </div>
+                    {% endfor %}
+                 </div>
             </div>
-        </div>
 
+            <!-- Kegiatan Terkait -->
+            <div class="lg:col-span-12 mt-12">
+                 <div class="flex items-center justify-between mb-12">
+                     <h2 class="text-3xl font-heading font-bold text-slate-950 italic">Agenda Mendatang</h2>
+                     <div class="h-[1px] flex-grow mx-8 bg-slate-100"></div>
+                 </div>
+                 <div class="grid md:grid-cols-2 gap-8">
+                    {% for item in kegiatan_terkait %}
+                    <div class="bento-card bg-indigo-600 rounded-[3rem] p-10 text-white flex flex-col md:flex-row gap-8 items-center" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                        <div class="w-32 h-32 flex-shrink-0 bg-white/10 rounded-[2rem] overflow-hidden shadow-2xl">
+                            {% if item.poster %}
+                            <img src="{{ item.poster.url }}" class="w-full h-full object-cover" alt="{{ item.judul }}">
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow space-y-4">
+                            <h3 class="text-2xl font-heading font-bold italic">{{ item.judul }}</h3>
+                            <p class="text-indigo-100 text-sm font-medium opacity-80"><i class="fas fa-map-marker-alt mr-2"></i> {{ item.lokasi }}</p>
+                            <a href="{% url 'kegiatan_detail' item.pk %}" class="inline-block bg-white text-indigo-600 px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition-all">Details</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-span-full py-16 text-center bg-white rounded-[3rem] border border-slate-100">
+                        <p class="text-slate-300 font-bold uppercase tracking-widest text-[10px] italic">Belum ada kegiatan terjadwal</p>
+                    </div>
+                    {% endfor %}
+                 </div>
+            </div>
+
+            <!-- Dokumentasi Terkait -->
+            <div class="lg:col-span-12 mt-12">
+                <div class="flex items-center justify-between mb-12">
+                    <h2 class="text-3xl font-heading font-bold text-slate-950 italic">Galeri Aktivitas</h2>
+                    <div class="h-[1px] flex-grow mx-8 bg-slate-100"></div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {% for item in dokumentasi_terkait %}
+                    <div class="rounded-[2rem] overflow-hidden aspect-square border border-slate-100 group shadow-sm" data-aos="zoom-in" data-aos-delay="{{ forloop.counter }}00">
+                        <img src="{{ item.foto.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="{{ item.deskripsi }}">
+                    </div>
+                    {% empty %}
+                    <div class="col-span-full py-16 text-center bg-white rounded-[3rem] border border-slate-100">
+                        <p class="text-slate-300 font-bold uppercase tracking-widest text-[10px] italic">Belum ada foto dokumentasi</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
     </div>
-</div>
+</section>
 {% endblock %}

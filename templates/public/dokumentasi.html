@@ -1,55 +1,54 @@
 {% extends 'base.html' %}
-{% block title %}Dokumentasi | HIMABISDIG UNM{% endblock %}
+{% block title %}Gallery | HIMABISDIG UNM{% endblock %}
 
 {% block content %}
-<div class="bg-gray-50 py-12 min-h-screen">
+<!-- Page Header -->
+<section class="pt-32 pb-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-slate-50 border border-slate-100 rounded-full mb-10">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] italic">Visual Archive</span>
+        </div>
+        <h1 class="text-5xl md:text-8xl font-heading font-bold text-slate-950 mb-8 leading-none italic" data-aos="fade-down">Dokumentasi</h1>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="pb-12 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Dokumentasi</h1>
-            <p class="mt-4 text-xl text-gray-500">Galeri foto dan video dari berbagai kegiatan HIMABISDIG.</p>
-        </div>
+        <form method="GET" class="flex flex-wrap items-center justify-center gap-3">
+            <a href="?" class="px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest border transition-all {% if not selected_kegiatan %}bg-slate-950 text-white border-slate-950{% else %}bg-transparent text-slate-400 border-slate-100 hover:border-slate-300{% endif %}">
+                Semua
+            </a>
+            {% for k in terkait_kegiatan %}
+            <a href="?kegiatan={{ k.id }}" class="px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest border transition-all {% if selected_kegiatan == k.id|stringformat:'s' %}bg-slate-950 text-white border-slate-950{% else %}bg-transparent text-slate-400 border-slate-100 hover:border-slate-300{% endif %}">
+                {{ k.judul }}
+            </a>
+            {% endfor %}
+        </form>
+    </div>
+</section>
 
-        <!-- Filter / Kategori Kegiatan -->
-        <div class="mb-10 text-center">
-            <form method="GET" action="{% url 'dokumentasi' %}">
-                <label for="kegiatan" class="sr-only">Filter Kegiatan</label>
-                <div class="inline-flex shadow-sm rounded-md align-middle items-center gap-2">
-                    <span class="text-gray-500 font-medium whitespace-nowrap">Filter Kegiatan: </span>
-                    <select name="kegiatan" id="kegiatan" onchange="this.form.submit()" class="block w-full py-2 pl-3 pr-10 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md border min-w-[200px]">
-                        <option value="">Semua Dokumentasi</option>
-                        {% for k in terkait_kegiatan %}
-                            <option value="{{ k.id }}" {% if selected_kegiatan == k.id|stringformat:"s" %}selected{% endif %}>{{ k.judul }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </form>
-        </div>
-
-        <!-- Gallery Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- Gallery Grid -->
+<section class="pb-32 bg-[#fcfcfd]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for item in dokumentasi %}
-            <div class="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                <div class="aspect-w-1 aspect-h-1 w-full bg-gray-200">
-                    {% if item.foto %}
-                        <img src="{{ item.foto.url }}" alt="{{ item.deskripsi }}" class="w-full h-64 object-cover object-center group-hover:opacity-75 transition-opacity">
-                    {% else %}
-                        <div class="w-full h-64 flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>
-                    {% endif %}
-                </div>
-                <div class="p-4 bg-white border-t border-gray-100">
-                    <p class="text-sm font-medium text-primary-600 truncate">
-                        {% if item.kegiatan %}{{ item.kegiatan.judul }}{% else %}Umum{% endif %}
-                    </p>
-                    <p class="text-xs text-gray-500 mt-1 truncate" title="{{ item.deskripsi }}">{{ item.deskripsi|default:"Brak deskripsi" }}</p>
+            <div class="bg-white rounded-[2.5rem] p-4 border border-slate-100 group shadow-sm hover:shadow-premium transition-all" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                <div class="relative overflow-hidden rounded-[2rem] aspect-square">
+                    <img src="{{ item.foto.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="{{ item.deskripsi }}">
+                    <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                        <p class="text-white text-xs font-bold uppercase tracking-widest text-center px-6">
+                            {{ item.deskripsi|default:"Aktivitas HIMABISDIG" }}
+                        </p>
+                    </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-span-full py-20 text-center">
-                <i class="fas fa-camera-retro text-6xl text-gray-300 mb-4 block"></i>
-                <p class="text-xl text-gray-500 font-medium">Belum ada dokumentasi tersedia.</p>
+            <div class="col-span-full py-24 text-center bg-white rounded-[3rem] border border-slate-50">
+                <p class="text-slate-300 font-bold uppercase tracking-widest text-[10px] italic">Belum ada dokumentasi ditambahkan</p>
             </div>
             {% endfor %}
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
